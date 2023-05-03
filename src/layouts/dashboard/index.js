@@ -35,8 +35,19 @@ import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 
+import { getAuth, updateProfile } from "firebase/auth";
+import { useLocation } from "react-router-dom";
+
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  const location = useLocation();
+
+  updateProfile(user, {
+    displayName: location.state,
+  });
 
   return (
     <DashboardLayout>

@@ -13,10 +13,10 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -41,10 +41,47 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 
+// firebase
+import { auth } from "../../../Firebase/config";
+import Dashboard from "../../dashboard";
+
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
-
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [password, setPassword] = useState("");
+  const [isDisabled, setIsDisabled] = useState(false);
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      return <Navigate to={<Dashboard />} />;
+    }
+    return () => {};
+  }, []);
+  const handleSignin = () => {
+    if (!email || !password) {
+      setError("Please fill all the fields");
+      return;
+    }
+    setIsDisabled(true);
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then(({ user }) => {
+        setIsDisabled(false);
+        localStorage.setItem("accessToken", user?.multiFactor?.user?.accessToken);
+        navigate("/dashboard");
+      })
+      .catch((err) => {
+        setError(err.message);
+        setIsDisabled(false);
+      });
+    setError("");
+    setEmail("");
+    setPassword("");
+  };
 
   return (
     <BasicLayout image={bgImage}>
@@ -84,10 +121,20 @@ function Basic() {
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">
             <MDBox mb={2}>
-              <MDInput type="email" label="Email" fullWidth />
+              <MDInput
+                type="email"
+                label="Email"
+                fullWidth
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="password" label="Password" fullWidth />
+              <MDInput
+                type="password"
+                label="Password"
+                fullWidth
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Switch checked={rememberMe} onChange={handleSetRememberMe} />
@@ -101,8 +148,15 @@ function Basic() {
                 &nbsp;&nbsp;Remember me
               </MDTypography>
             </MDBox>
+            {error && <b style={{ textAlign: "center", color: "red" }}>{error}</b>}
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
+              <MDButton
+                variant="gradient"
+                color="info"
+                fullWidth
+                onClick={handleSignin}
+                disabled={isDisabled}
+              >
                 sign in
               </MDButton>
             </MDBox>

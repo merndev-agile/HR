@@ -42,6 +42,7 @@ import Billing from "layouts/billing";
 import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
+import Attendance from "layouts/attendance";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 
@@ -96,6 +97,14 @@ const routes = [
     icon: <Icon fontSize="small">person</Icon>,
     route: "/profile",
     component: <Profile />,
+  },
+  {
+    type: "collapse",
+    name: "Attendance",
+    key: "attendance",
+    icon: <Icon fontSize="small">person</Icon>,
+    route: "/attendance",
+    component: <Attendance />,
   },
   {
     type: "collapse",

@@ -12,9 +12,9 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-
+import { useState } from "react";
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -25,14 +25,46 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
-
 // Authentication layout components
 import CoverLayout from "layouts/authentication/components/CoverLayout";
 
 // Images
 import bgImage from "assets/images/bg-sign-up-cover.jpeg";
 
+// firebase
+import { auth } from "../../../Firebase/config";
+
 function Cover() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [disabled, setIsDisabled] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleSignup = async () => {
+    if (!name || !email || !password) {
+      setError("Please fill all required fields");
+      return;
+    }
+    setIsDisabled(true);
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        setIsDisabled(false);
+        navigate("/dashboard", { state: name });
+      })
+      .catch((err) => {
+        setError(err.message);
+        setIsDisabled(false);
+      });
+
+    setError("");
+    setEmail(" ");
+    setName(" ");
+    setPassword(" ");
+  };
   return (
     <CoverLayout image={bgImage}>
       <Card>
@@ -57,13 +89,31 @@ function Cover() {
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">
             <MDBox mb={2}>
-              <MDInput type="text" label="Name" variant="standard" fullWidth />
+              <MDInput
+                type="text"
+                label="Name"
+                variant="standard"
+                fullWidth
+                onChange={(e) => setName(e.target.value)}
+              />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="email" label="Email" variant="standard" fullWidth />
+              <MDInput
+                type="email"
+                label="Email"
+                variant="standard"
+                fullWidth
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="password" label="Password" variant="standard" fullWidth />
+              <MDInput
+                type="password"
+                label="Password"
+                variant="standard"
+                fullWidth
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Checkbox />
@@ -86,9 +136,16 @@ function Cover() {
                 Terms and Conditions
               </MDTypography>
             </MDBox>
+            {error && <b style={{ color: "red" }}>{error}</b>}
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
-                sign in
+              <MDButton
+                variant="gradient"
+                color="info"
+                fullWidth
+                onClick={handleSignup}
+                disabled={disabled}
+              >
+                sign up
               </MDButton>
             </MDBox>
             <MDBox mt={3} mb={1} textAlign="center">
