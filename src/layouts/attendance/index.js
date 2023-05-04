@@ -11,6 +11,9 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // import moment from "moment";
 
+// prop types
+import PropTypes from "prop-types";
+
 // import { formatDate } from "@fullcalendar/core";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -21,12 +24,11 @@ import data from "./data";
 import MarkAttendance from "./markAttendance";
 import "./styles.css";
 
-function Attendance() {
+function Attendance({ uid }) {
   // eslint-disable-next-line no-unused-vars
   const [weekendsVisible, setWeekendsVisible] = React.useState(true);
   // eslint-disable-next-line no-unused-vars
   const [currentEvents, setCurrentEvents] = React.useState([]);
-
   function createEventId() {
     return String(Date.now());
   }
@@ -46,15 +48,14 @@ function Attendance() {
       });
     }
   };
-
-  function renderEventContent(eventInfo) {
-    return (
-      <>
-        <b>{eventInfo.timeText}</b>
-        <i>{eventInfo.event.title}</i>
-      </>
-    );
-  }
+  // function renderEventContent(eventInfo) {
+  //   return (
+  //     <>
+  //       <b>{eventInfo.timeText}</b>
+  //       <i>{eventInfo.event.title}</i>
+  //     </>
+  //   );
+  // }
 
   // const handleEvents = (events) => {
   //   // this.setState({
@@ -78,8 +79,7 @@ function Attendance() {
     <DashboardLayout>
       <DashboardNavbar>Attendance</DashboardNavbar>
       <MDBox mt={8} />
-
-      <MarkAttendance />
+      {uid && <MarkAttendance uid={uid} />}
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         events={events}
@@ -94,14 +94,18 @@ function Attendance() {
         selectMirror
         dayMaxEvents
         weekends={weekendsVisible}
-        // initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
         select={handleDateSelect}
         // eslint-disable-next-line react/jsx-no-bind
-        eventContent={renderEventContent} // custom render function
+        // eventContent={renderEventContent} // custom render function
         eventClick={handleEventClick}
       />
     </DashboardLayout>
   );
 }
-
+Attendance.defaultProps = {
+  uid: " ",
+};
+Attendance.propTypes = {
+  uid: PropTypes.string,
+};
 export default Attendance;

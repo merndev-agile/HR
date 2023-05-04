@@ -53,6 +53,12 @@ import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "co
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 
+// Layouts
+import Attendance from "layouts/attendance";
+
+// firebase
+import { auth } from "./Firebase/config";
+
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
   const {
@@ -67,7 +73,23 @@ export default function App() {
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
+  const [uid, setUid] = useState(null);
+
   const { pathname } = useLocation();
+
+  // firebase authentication
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUid(user.uid);
+      } else {
+        setUid(null);
+      }
+    });
+
+    return unsubscribe;
+  }, []);
 
   // Cache for the rtl
   useMemo(() => {
@@ -193,6 +215,7 @@ export default function App() {
         {getRoutes(routes)}
         <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
+      {uid && <Attendance uid={uid} />}
     </ThemeProvider>
   );
 }
