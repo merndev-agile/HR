@@ -32,6 +32,7 @@ const useStyles = makeStyles({
     boxShadow: "0px 0px 20px 0px rgba(0,0,0,0.1)",
     background: "linear-gradient(to bottom, #366589, #6698d3);",
   },
+
   header: {
     backgroundColor: "#FE6B8B",
     color: "#fff",
