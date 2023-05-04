@@ -215,6 +215,7 @@ export default function App() {
         {getRoutes(routes)}
         <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
+      {/* ------------------------------------------Testing Phase--------------------- */}
       {uid && <Attendance uid={uid} />}
     </ThemeProvider>
   );

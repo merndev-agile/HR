@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -22,13 +22,16 @@ import interactionPlugin from "@fullcalendar/interaction";
 import data from "./data";
 
 import MarkAttendance from "./markAttendance";
-import "./styles.css";
+
+// firebase
+import { db } from "../../Firebase/config";
 
 function Attendance({ uid }) {
   // eslint-disable-next-line no-unused-vars
   const [weekendsVisible, setWeekendsVisible] = React.useState(true);
   // eslint-disable-next-line no-unused-vars
   const [currentEvents, setCurrentEvents] = React.useState([]);
+  const [attendanceData, setAttendanceData] = React.useState([]);
   function createEventId() {
     return String(Date.now());
   }
@@ -48,6 +51,24 @@ function Attendance({ uid }) {
       });
     }
   };
+
+  // -------------------------------->working on this part (to get the data from the firebase) --------------------------------
+  useEffect(() => {
+    const unsubscribe = db
+      .collection("attendanceCollection")
+      .where("uid", "==", uid)
+      .onSnapshot((snapshot) => {
+        console.log("snapshot", snapshot);
+        const array = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        setAttendanceData(array);
+      });
+
+    return unsubscribe;
+  }, []);
+  console.log("attendanceData", attendanceData);
+
+  // --------------------------------------end---------------
+
   // function renderEventContent(eventInfo) {
   //   return (
   //     <>
@@ -72,7 +93,9 @@ function Attendance({ uid }) {
   const events = data.login_info.map((info) => ({
     title: "My Event",
     start: `${info.date.slice(6)}-${info.date.slice(3, 5)}-${info.date.slice(0, 2)}`,
-    classNames: ["my-event-class"],
+    display: "background",
+    color: "red",
+    // classNames: ["my-event-class"],
   }));
 
   return (

@@ -15,7 +15,6 @@ import MDTypography from "components/MDTypography";
 
 // firebase
 // import { addDoc } from "firebase/firestore";
-// import { db } from "../../../Firebase/config";
 import { db } from "../../../Firebase/config";
 
 // import dataArr from "../data";
