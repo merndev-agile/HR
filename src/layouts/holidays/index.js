@@ -20,7 +20,6 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 
-
 const useStyles = makeStyles({
   root: {
     width: "100%",
@@ -33,7 +32,6 @@ const useStyles = makeStyles({
     background: "linear-gradient(to bottom, #366589, #6698d3);",
   },
 
-  
   header: {
     backgroundColor: "#FE6B8B",
     color: "#fff",
