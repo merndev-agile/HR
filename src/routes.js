@@ -45,6 +45,7 @@ import Profile from "layouts/profile";
 import Attendance from "layouts/attendance";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
+import ListedHolidays from "layouts/holidays";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -105,6 +106,14 @@ const routes = [
     icon: <Icon fontSize="small">person</Icon>,
     route: "/attendance",
     component: <Attendance />,
+  },
+  {
+    type: "collapse",
+    name: "Holidays",
+    key: "holidays",
+    icon: <Icon fontSize="small">holidays</Icon>,
+    route: "/holidays",
+    component: <ListedHolidays />,
   },
   {
     type: "collapse",

@@ -15,7 +15,7 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 // Get a reference to Firestore
-const db = firebase.firestore();
+ export const db = firebase.firestore();
 
 // Create a new collection called "userLogins"
 export const userLoginsCollection = db.collection("userLogins");
