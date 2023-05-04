@@ -1,7 +1,11 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 
 // React RouterDom
 import { Link } from "react-router-dom";
+
+// prop types
+import PropTypes from "prop-types";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -11,11 +15,11 @@ import MDTypography from "components/MDTypography";
 
 // firebase
 // import { addDoc } from "firebase/firestore";
-import { attendanceCollection } from "../../../Firebase/config";
+import { db } from "../../../Firebase/config";
 
 // import dataArr from "../data";
 
-function MarkAttendance() {
+function MarkAttendance({ uid }) {
   const [timeIn, setTimeIn] = React.useState("");
   const [timeOut, setTimeOut] = React.useState("");
   const [loginDate, setLoginDate] = React.useState("");
@@ -48,8 +52,12 @@ function MarkAttendance() {
 
   const handleMarkAttendance = () => {
     // Add data to the attendanceCollection
+    const userDocumentsRef = db
+      .collection("attendanceCollection")
+      .doc(uid)
+      .collection("attendanceCollection");
     try {
-      attendanceCollection
+      userDocumentsRef
         .add({
           timeIn,
           timeOut,
@@ -100,5 +108,10 @@ function MarkAttendance() {
     </MDBox>
   );
 }
-
+MarkAttendance.defaultProps = {
+  uid: " ",
+};
+MarkAttendance.propTypes = {
+  uid: PropTypes.string,
+};
 export default MarkAttendance;
