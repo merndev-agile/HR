@@ -87,7 +87,6 @@ const Input = ({ todo, setTodo }) => {
         obj.value = value;
         obj.occassion = occassion;
         e.preventDefault();   
-
        
         // firestore.collection('holidays').add({
         //     todo: obj,
