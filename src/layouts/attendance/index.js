@@ -94,7 +94,7 @@ function Attendance({ uid }) {
     title: "My Event",
     start: `${info.date.slice(6)}-${info.date.slice(3, 5)}-${info.date.slice(0, 2)}`,
     display: "background",
-    color: "red",
+    color: "green",
     // classNames: ["my-event-class"],
   }));
 
