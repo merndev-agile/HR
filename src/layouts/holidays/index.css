@@ -1,0 +1,29 @@
+
+.edit{
+    padding: 20px;
+     height: 15%;
+     display: flex;
+     justify-content: space-evenly;
+  text-align: center;
+     margin-bottom: 2rem;
+ }
+
+ 
+ h2{
+    background: linear-gradient(to bottom, #366589, #6698d3)!important;
+    height: 65px;
+    font-size: 30px;
+     text-align: center;
+     font-family: Arial, Helvetica, sans-serif;
+ }
+ .row{
+     display: flex;
+     justify-content: center;
+     align-items: center;
+ }
+ 
+ .object{
+         display: flex;
+         width: 70%;
+         justify-content: space-around;
+ }
