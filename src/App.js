@@ -54,7 +54,7 @@ import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 
 // Layouts
-import Attendance from "layouts/attendance";
+// import Attendance from "layouts/attendance";
 
 // firebase
 import { auth } from "./Firebase/config";
@@ -73,6 +73,7 @@ export default function App() {
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [uid, setUid] = useState(null);
 
   const { pathname } = useLocation();
@@ -218,7 +219,7 @@ export default function App() {
 
       {/* ------------------------------------------Testing Phase--------------------- */}
 
-      {uid && <Attendance uid={uid} />}
+      {/* {uid && <Attendance uid={uid} />} */}
     </ThemeProvider>
   );
 }

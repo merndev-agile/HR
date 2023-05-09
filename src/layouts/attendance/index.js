@@ -12,7 +12,7 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 // import moment from "moment";
 
 // prop types
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 // import { formatDate } from "@fullcalendar/core";
 import FullCalendar from "@fullcalendar/react";
@@ -24,9 +24,13 @@ import data from "./data";
 import MarkAttendance from "./markAttendance";
 
 // firebase
-import { db } from "../../Firebase/config";
+import { db, auth } from "../../Firebase/config";
 
-function Attendance({ uid }) {
+function Attendance() {
+  const { _delegate } = auth;
+  const { currentUser } = _delegate;
+  const uid = 123;
+  console.log("currentUser: ", currentUser);
   // eslint-disable-next-line no-unused-vars
   const [weekendsVisible, setWeekendsVisible] = React.useState(true);
   // eslint-disable-next-line no-unused-vars
@@ -128,7 +132,7 @@ function Attendance({ uid }) {
 Attendance.defaultProps = {
   uid: " ",
 };
-Attendance.propTypes = {
-  uid: PropTypes.string,
-};
+// Attendance.propTypes = {
+//   uid: PropTypes.string,
+// };
 export default Attendance;
