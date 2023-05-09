@@ -19,6 +19,7 @@ import { Link, useNavigate } from "react-router-dom";
 // @mui material components
 import Card from "@mui/material/Card";
 import Checkbox from "@mui/material/Checkbox";
+import { RadioGroup, FormControlLabel, Radio } from "@material-ui/core";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -32,26 +33,43 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 import bgImage from "assets/images/bg-sign-up-cover.jpeg";
 
 // firebase
-import { auth } from "../../../Firebase/config";
+import { auth, db } from "../../../Firebase/config";
 
 function Cover() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
   const [error, setError] = useState("");
   const [disabled, setIsDisabled] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSignup = async () => {
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !role) {
       setError("Please fill all required fields");
       return;
     }
     setIsDisabled(true);
     auth
       .createUserWithEmailAndPassword(email, password)
-      .then(() => {
+      .then(async (userCredential) => {
+        // console.log("user credential", userCredential.user);
+        const { user } = userCredential;
+        await db
+          .collection("users")
+          .doc(user.uid)
+          .set({
+            name,
+            email,
+            password,
+            role,
+          })
+          .catch((err) => {
+            console.log("not created user collection", err);
+            setError(err.message);
+            setIsDisabled(false);
+          });
         setIsDisabled(false);
         navigate("/dashboard", { state: name });
       })
@@ -61,9 +79,10 @@ function Cover() {
       });
 
     setError("");
-    setEmail(" ");
-    setName(" ");
-    setPassword(" ");
+    setEmail("");
+    setName("");
+    setRole("");
+    setPassword("");
   };
   return (
     <CoverLayout image={bgImage}>
@@ -114,6 +133,16 @@ function Cover() {
                 fullWidth
                 onChange={(e) => setPassword(e.target.value)}
               />
+            </MDBox>
+            <MDBox mb={2}>
+              <RadioGroup value={role} onChange={(e) => setRole(e.target.value)}>
+                <FormControlLabel value="admin" control={<Radio color="primary" />} label="Admin" />
+                <FormControlLabel
+                  value="employee"
+                  control={<Radio color="primary" />}
+                  label="Employee"
+                />
+              </RadioGroup>
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Checkbox />
