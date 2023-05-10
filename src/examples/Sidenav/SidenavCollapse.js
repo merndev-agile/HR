@@ -32,19 +32,20 @@ import {
 
 // Material Dashboard 2 React context
 import { useMaterialUIController } from "context";
+// import { Navigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function SidenavCollapse({ icon, name, active, ...rest }) {
   const [controller] = useMaterialUIController();
   const [open, setOpen] = React.useState(false);
   const { miniSidenav, transparentSidenav, whiteSidenav, darkMode, sidenavColor } = controller;
-
+  // const navigate = useNavigate();
+  // const handleClick = () => {
+  //   navigate("/notifications");
+  // };
   return (
-    <ListItem
-      component="li"
-      onClick={() => {
-        setOpen(!open);
-      }}
-    >
+    <ListItem component="li">
       <MDBox>
         <MDBox
           {...rest}
@@ -57,6 +58,9 @@ function SidenavCollapse({ icon, name, active, ...rest }) {
               sidenavColor,
             })
           }
+          onClick={() => {
+            setOpen(!open);
+          }}
         >
           <ListItemIcon
             sx={(theme) =>
@@ -89,23 +93,68 @@ function SidenavCollapse({ icon, name, active, ...rest }) {
             ))}
         </MDBox>
 
-        {/* Add sumbmenu-- */}
+        {/* Add sumbmenu------------------------------ */}
         {name === "Employee" && (
-          <MDBox sx={{ paddingLeft: "13px" }}>
+          <MDBox
+            {...rest}
+            // sx={(theme) =>
+            //   collapseItem(theme, {
+            //     active: open && active,
+            //     transparentSidenav,
+            //     whiteSidenav,
+            //     darkMode,
+            //     sidenavColor,
+            //   })
+            // }
+          >
             <Collapse in={open} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <ListItem button>
-                  <ListItemIcon>
-                    <Icon fontSize="small">person_add</Icon>
-                  </ListItemIcon>
-                  <ListItemText style={{ color: "white" }} primary="Add Employee" />
-                </ListItem>
-                <ListItem button>
-                  <ListItemIcon>
-                    <Icon fontSize="small">details</Icon>
-                  </ListItemIcon>
-                  <ListItemText style={{ color: "white" }} primary="Employee Details" />
-                </ListItem>
+                {rest?.child &&
+                  rest?.child.map((item) => (
+                    <MDBox
+                    // {...rest}
+                    // sx={(theme) =>
+                    //   collapseItem(theme, {
+                    //     active: open && active,
+                    //     transparentSidenav,
+                    //     whiteSidenav,
+                    //     darkMode,
+                    //     sidenavColor,
+                    //   })
+                    // }
+                    >
+                      {/* <Collapse in={open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding> */}
+                      <NavLink key={item?.key} to={item?.route}>
+                        <ListItem button>
+                          <ListItemIcon>
+                            {typeof item?.icon === "string" ? (
+                              <Icon sx={(theme) => collapseIcon(theme, { active })}>
+                                {item?.icon}
+                              </Icon>
+                            ) : (
+                              item.icon
+                            )}
+                          </ListItemIcon>
+                          <ListItemText
+                            sx={(theme) =>
+                              collapseText(theme, {
+                                miniSidenav,
+                                transparentSidenav,
+                                whiteSidenav,
+                                active,
+                              })
+                            }
+                            style={{ color: "white" }}
+                            primary={item?.name}
+                          />
+                        </ListItem>
+                      </NavLink>
+
+                      {/* </List>
+                  </Collapse> */}
+                    </MDBox>
+                  ))}
               </List>
             </Collapse>
           </MDBox>

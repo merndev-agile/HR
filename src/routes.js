@@ -47,6 +47,8 @@ import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import ListedHolidays from "layouts/holidays";
 import Employee from "layouts/employee";
+import AddNewEmployee from "layouts/employee/components/addNewEmployee";
+import EmployeeDetails from "layouts/employee/components/employeeDetails";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -99,6 +101,24 @@ const routes = [
     icon: <Icon fontSize="small">people</Icon>,
     route: "/employee",
     component: <Employee />,
+    child: [
+      {
+        type: "collapse",
+        name: "AddEmployee",
+        key: "addEmployee",
+        icon: <Icon fontSize="small">person_add</Icon>,
+        route: "/employee/add",
+        component: <AddNewEmployee />,
+      },
+      {
+        type: "collapse",
+        name: "EmployeeDetails",
+        key: "employeeDetails",
+        icon: <Icon fontSize="small">details</Icon>,
+        route: "/employee/details",
+        component: <EmployeeDetails />,
+      },
+    ],
   },
   {
     type: "collapse",
