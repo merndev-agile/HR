@@ -46,6 +46,7 @@ import Attendance from "layouts/attendance";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import ListedHolidays from "layouts/holidays";
+import Employee from "layouts/employee";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -93,6 +94,14 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "Employee",
+    key: "employee",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/employee",
+    component: <Employee />,
+  },
+  {
+    type: "collapse",
     name: "Profile",
     key: "profile",
     icon: <Icon fontSize="small">person</Icon>,
@@ -131,7 +140,6 @@ const routes = [
     route: "/authentication/sign-up",
     component: <SignUp />,
   },
-
 ];
 
 export default routes;
