@@ -107,7 +107,7 @@ const routes = [
         name: "AddEmployee",
         key: "addEmployee",
         icon: <Icon fontSize="small">person_add</Icon>,
-        route: "/employee/add",
+        route: "/employee/addEmployee",
         component: <AddNewEmployee />,
       },
       {
@@ -115,7 +115,7 @@ const routes = [
         name: "EmployeeDetails",
         key: "employeeDetails",
         icon: <Icon fontSize="small">details</Icon>,
-        route: "/employee/details",
+        route: "/employee/EmployeeDetails",
         component: <EmployeeDetails />,
       },
     ],
