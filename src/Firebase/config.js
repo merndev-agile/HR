@@ -16,7 +16,6 @@ if (!firebase.apps.length) {
 }
 // Get a reference to Firestore
 export const db = firebase.firestore();
-const auth = firebase.auth();
+export const auth = firebase.auth();
 export const updateProfile = firebase.auth();
 export const firestore = firebase.firestore();
-export { auth };
