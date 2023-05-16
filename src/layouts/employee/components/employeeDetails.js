@@ -22,6 +22,7 @@ const useStyles = makeStyles({
     // maxwidth: 5000,
     width: 900,
     height: "50vh",
+    marginBottom: "20px",
   },
   content_container: {
     maxwidth: 500,
