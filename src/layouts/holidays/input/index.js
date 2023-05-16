@@ -4,8 +4,8 @@ import "react-calendar/dist/Calendar.css";
 import { Calendar } from "react-calendar";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
-import { db } from "layouts/Firebase/config";
-import { collection, addDoc, getDocs, doc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../../../Firebase/config";
 
 const useStyles = makeStyles({
   root: {
@@ -64,20 +64,17 @@ const useStyles = makeStyles({
     },
   },
 });
-
-const Input = ({ todo, setTodo }) => {
+function Input() {
   const classes = useStyles();
-
   const [value, setValue] = React.useState(new Date());
   const [occassion, setOccassion] = React.useState("");
-
   const handleDateChange = (data) => {
     const hy = moment(data).format("DD/MM/YYYY");
     setValue(hy);
   };
 
   const handleAdd = async (e) => {
-    let obj = {};
+    const obj = {};
     obj.value = value;
     obj.occassion = occassion;
     e.preventDefault();
@@ -89,15 +86,14 @@ const Input = ({ todo, setTodo }) => {
 
     try {
       const docRef = await addDoc(collection(db, "holidays"), {
-        occassion: occassion,
-        value: value,
+        occassion,
+        value,
         votes: 0,
       });
       console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-      console.error("Error adding document: ", e);
+    } catch (eror) {
+      console.error("Error adding document: ", eror);
     }
-
     setValue(new Date());
     setOccassion("");
   };
@@ -124,6 +120,6 @@ const Input = ({ todo, setTodo }) => {
       </div>
     </div>
   );
-};
+}
 
 export default Input;

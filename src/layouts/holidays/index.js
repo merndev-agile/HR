@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./index.css";
 import Paper from "@material-ui/core/Paper";
 import { Button } from "@material-ui/core";
@@ -9,15 +8,16 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import { collection, addDoc, getDocs, setDoc, doc, updateDoc } from "firebase/firestore";
-import { db } from "layouts/Firebase/config";
+import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 
 import MDBox from "components/MDBox";
 
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Input from "./input/index";
+import { db } from "../../Firebase/config";
+
+// import Input from "./input/index";
 
 const useStyles = makeStyles({
   root: {
@@ -79,7 +79,7 @@ const useStyles = makeStyles({
 });
 
 export default function ListedHolidays() {
-  const [role, setRole] = useState("");
+  // const [role, setRole] = useState("");
 
   const classes = useStyles();
 
@@ -87,7 +87,10 @@ export default function ListedHolidays() {
 
   const fetchPost = async () => {
     await getDocs(collection(db, "holidays")).then((querySnapshot) => {
-      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const newData = querySnapshot.docs.map((document) => ({
+        ...document.data(),
+        id: document.id,
+      }));
       setTodo(newData);
     });
   };
@@ -96,7 +99,6 @@ export default function ListedHolidays() {
     fetchPost();
   }, [todo]);
 
-  console.log("todo", todo);
   return (
     <DashboardLayout>
       <DashboardNavbar>Holidays</DashboardNavbar>
@@ -118,26 +120,24 @@ export default function ListedHolidays() {
               <TableBody>
                 {todo
                   .sort((a, b) => b.votes - a.votes)
-                  ?.map((item, index) => (
+                  ?.map((item) => (
                     <TableRow key={item.id}>
                       <TableCell component="th" scope="row" align="center">
                         {item.occassion}
                       </TableCell>
                       <TableCell align="center">{item.value}</TableCell>
                       <TableCell align="center">
-                        {
-                          <Button
-                            className={classes.button}
-                            onClick={(e) => {
-                              const docRef = doc(db, "holidays", item.id);
-                              updateDoc(docRef, {
-                                votes: item.votes + 1,
-                              }).then(() => console.log("Document updated"));
-                            }}
-                          >
-                            VOTE {item.votes}
-                          </Button>
-                        }
+                        <Button
+                          className={classes.button}
+                          onClick={() => {
+                            const docRef = doc(db, "holidays", item.id);
+                            updateDoc(docRef, {
+                              votes: item.votes + 1,
+                            }).then(() => console.log("Document updated"));
+                          }}
+                        >
+                          VOTE {item.votes}
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}

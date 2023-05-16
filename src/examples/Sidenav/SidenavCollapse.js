@@ -13,15 +13,12 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
+import React from "react";
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
 
-// @mui material components
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Icon from "@mui/material/Icon";
-
+import { List, ListItem, Icon, ListItemIcon, ListItemText, Collapse } from "@material-ui/core";
+// import { makeStyles } from "@material-ui/core/styles";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 
@@ -35,48 +32,133 @@ import {
 
 // Material Dashboard 2 React context
 import { useMaterialUIController } from "context";
+// import { Navigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function SidenavCollapse({ icon, name, active, ...rest }) {
   const [controller] = useMaterialUIController();
+  const [open, setOpen] = React.useState(false);
   const { miniSidenav, transparentSidenav, whiteSidenav, darkMode, sidenavColor } = controller;
-
+  // const navigate = useNavigate();
+  // const handleClick = () => {
+  //   navigate("/notifications");
+  // };
   return (
     <ListItem component="li">
-      <MDBox
-        {...rest}
-        sx={(theme) =>
-          collapseItem(theme, {
-            active,
-            transparentSidenav,
-            whiteSidenav,
-            darkMode,
-            sidenavColor,
-          })
-        }
-      >
-        <ListItemIcon
+      <MDBox>
+        <MDBox
+          {...rest}
           sx={(theme) =>
-            collapseIconBox(theme, { transparentSidenav, whiteSidenav, darkMode, active })
-          }
-        >
-          {typeof icon === "string" ? (
-            <Icon sx={(theme) => collapseIcon(theme, { active })}>{icon}</Icon>
-          ) : (
-            icon
-          )}
-        </ListItemIcon>
-
-        <ListItemText
-          primary={name}
-          sx={(theme) =>
-            collapseText(theme, {
-              miniSidenav,
+            collapseItem(theme, {
+              active,
               transparentSidenav,
               whiteSidenav,
-              active,
+              darkMode,
+              sidenavColor,
             })
           }
-        />
+          onClick={() => {
+            setOpen(!open);
+          }}
+        >
+          <ListItemIcon
+            sx={(theme) =>
+              collapseIconBox(theme, { transparentSidenav, whiteSidenav, darkMode, active })
+            }
+          >
+            {typeof icon === "string" ? (
+              <Icon sx={(theme) => collapseIcon(theme, { active })}>{icon}</Icon>
+            ) : (
+              icon
+            )}
+          </ListItemIcon>
+
+          <ListItemText
+            primary={name}
+            sx={(theme) =>
+              collapseText(theme, {
+                miniSidenav,
+                transparentSidenav,
+                whiteSidenav,
+                active,
+              })
+            }
+          />
+          {name === "Employee" &&
+            (open ? (
+              <Icon fontSize="small">expand_less</Icon>
+            ) : (
+              <Icon fontSize="small">expand_more</Icon>
+            ))}
+        </MDBox>
+
+        {/* Add sumbmenu------------------------------ */}
+        {name === "Employee" && (
+          <MDBox
+            {...rest}
+            // sx={(theme) =>
+            //   collapseItem(theme, {
+            //     active: open && active,
+            //     transparentSidenav,
+            //     whiteSidenav,
+            //     darkMode,
+            //     sidenavColor,
+            //   })
+            // }
+          >
+            <Collapse in={open} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                {rest?.child &&
+                  rest?.child.map((item) => (
+                    <MDBox
+                    // {...rest}
+                    // sx={(theme) =>
+                    //   collapseItem(theme, {
+                    //     active: open && active,
+                    //     transparentSidenav,
+                    //     whiteSidenav,
+                    //     darkMode,
+                    //     sidenavColor,
+                    //   })
+                    // }
+                    >
+                      {/* <Collapse in={open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding> */}
+                      <NavLink key={item?.key} to={item?.route}>
+                        <ListItem button>
+                          <ListItemIcon>
+                            {typeof item?.icon === "string" ? (
+                              <Icon sx={(theme) => collapseIcon(theme, { active })}>
+                                {item?.icon}
+                              </Icon>
+                            ) : (
+                              item.icon
+                            )}
+                          </ListItemIcon>
+                          <ListItemText
+                            sx={(theme) =>
+                              collapseText(theme, {
+                                miniSidenav,
+                                transparentSidenav,
+                                whiteSidenav,
+                                active,
+                              })
+                            }
+                            style={{ color: "white" }}
+                            primary={item?.name}
+                          />
+                        </ListItem>
+                      </NavLink>
+
+                      {/* </List>
+                  </Collapse> */}
+                    </MDBox>
+                  ))}
+              </List>
+            </Collapse>
+          </MDBox>
+        )}
       </MDBox>
     </ListItem>
   );

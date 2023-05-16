@@ -15,11 +15,17 @@ import MDTypography from "components/MDTypography";
 
 // firebase
 // import { addDoc } from "firebase/firestore";
-import { db } from "../../../Firebase/config";
+// import { auth } from "firebase/auth";
+
+import { db, auth } from "../../../Firebase/config";
 
 // import dataArr from "../data";
 
-function MarkAttendance({ uid }) {
+function MarkAttendance() {
+  // const user = auth().currentUser;
+  const { _delegate } = auth;
+  const { currentUser } = _delegate;
+
   const [timeIn, setTimeIn] = React.useState("");
   const [timeOut, setTimeOut] = React.useState("");
   const [loginDate, setLoginDate] = React.useState("");
@@ -34,6 +40,9 @@ function MarkAttendance({ uid }) {
       console.log("eror", error);
     }
   };
+  React.useEffect(() => {
+    console.log("currentUser=----MarkAttendance: ", currentUser);
+  }, []);
   React.useEffect(() => {
     getLocation();
   }, []);
@@ -50,30 +59,30 @@ function MarkAttendance({ uid }) {
     gettingDate(timeIn);
   }, [timeIn]);
 
-  const handleMarkAttendance = () => {
-    // Add data to the attendanceCollection
-    const userDocumentsRef = db
-      .collection("attendanceCollection")
-      .doc(uid)
-      .collection("attendanceCollection");
-    try {
-      userDocumentsRef
-        .add({
-          timeIn,
-          timeOut,
-          location,
-          date: loginDate,
-        })
-        .then((docRef) => {
-          console.log("Document written with ID: ", docRef.id);
-        })
-        .catch((error) => {
-          console.error("Error adding document: ", error);
-        });
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
+  // const handleMarkAttendance = () => {
+  //   // Add data to the attendanceCollection
+  //   const userDocumentsRef = db
+  //     .collection("attendanceCollection")
+  //     .doc(uid)
+  //     .collection("attendanceCollection");
+  //   try {
+  //     userDocumentsRef
+  //       .add({
+  //         timeIn,
+  //         timeOut,
+  //         location,
+  //         date: loginDate,
+  //       })
+  //       .then((docRef) => {
+  //         console.log("Document written with ID: ", docRef.id);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error adding document: ", error);
+  //       });
+  //   } catch (error) {
+  //     console.log("error", error);
+  //   }
+  // };
   return (
     <MDBox style={{ width: "30%" }}>
       <MDBox mb={2}>
@@ -89,9 +98,9 @@ function MarkAttendance({ uid }) {
         <MDInput type="datetime-local" fullWidth onChange={(e) => setTimeOut(e.target.value)} />
       </MDBox>
       <MDBox mt={4} mb={1}>
-        <MDButton variant="gradient" color="info" fullWidth onClick={handleMarkAttendance}>
+        {/* <MDButton variant="gradient" color="info" fullWidth onClick={handleMarkAttendance}>
           Mark Attendance
-        </MDButton>
+        </MDButton> */}
       </MDBox>
       <MDBox mt={1} mb={1} textAlign="center">
         <MDTypography
@@ -108,10 +117,10 @@ function MarkAttendance({ uid }) {
     </MDBox>
   );
 }
-MarkAttendance.defaultProps = {
-  uid: " ",
-};
-MarkAttendance.propTypes = {
-  uid: PropTypes.string,
-};
+// MarkAttendance.defaultProps = {
+//   uid: " ",
+// };
+// MarkAttendance.propTypes = {
+//   uid: PropTypes.string,
+// };
 export default MarkAttendance;
