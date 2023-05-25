@@ -49,6 +49,7 @@ import ListedHolidays from "layouts/holidays";
 import Employee from "layouts/employee";
 import AddNewEmployee from "layouts/employee/components/addNewEmployee";
 import EmployeeDetails from "layouts/employee/components/employeeDetails";
+import RoleAuthenticationPage from "layouts/roleAuthentication";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -93,6 +94,14 @@ const routes = [
     icon: <Icon fontSize="small">notifications</Icon>,
     route: "/notifications",
     component: <Notifications />,
+  },
+  {
+    type: "collapse",
+    name: "RoleAuthentication",
+    key: "roleAuthentication",
+    icon: <Icon fontSize="small">notifications</Icon>,
+    route: "/roleAuthentication",
+    component: <RoleAuthenticationPage />,
   },
   {
     type: "collapse",

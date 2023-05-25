@@ -41,12 +41,12 @@ import { useLocation } from "react-router-dom";
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
   const auth = getAuth();
-  const user = auth.currentUser;
+  const user = auth?.currentUser;
 
   const location = useLocation();
 
   updateProfile(user, {
-    displayName: location.state,
+    displayName: location?.state,
   });
 
   return (
