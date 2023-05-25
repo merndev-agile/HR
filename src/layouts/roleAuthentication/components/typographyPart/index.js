@@ -5,6 +5,9 @@ import { Typography, Box, Button } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@mui/icons-material/Add";
 
+// it's components";
+import AddNewRolePopUp from "./addNewRole";
+
 const useStyles = makeStyles({
   root: {
     display: "flex",
@@ -23,6 +26,17 @@ const useStyles = makeStyles({
 
 function TypographyPart() {
   const classes = useStyles();
+
+  const [isVisibleModal, setIsVisibleModal] = React.useState(false);
+
+  const handleAddNewRole = () => {
+    setIsVisibleModal(true);
+    console.log("clicked");
+  };
+  const handleClose = () => {
+    setIsVisibleModal(false);
+  };
+
   return (
     <Box className={classes.root}>
       <Typography component="span" style={{ fontSize: "13px" }}>
@@ -33,9 +47,11 @@ function TypographyPart() {
         color="primary"
         className={classes.addButton}
         startIcon={<AddIcon />}
+        onClick={handleAddNewRole}
       >
         Add New Role
       </Button>
+      <AddNewRolePopUp open={isVisibleModal} handleClose={handleClose} />
     </Box>
   );
 }
