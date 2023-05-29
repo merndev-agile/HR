@@ -131,7 +131,6 @@ function AddNewRolePopUp({ open, handleClose }) {
 
   const handleCreateRole = () => {
     // Perform role creation logic
-    console.log(`Creating role: ${roleName}, Option: ${cloneRole}`);
     // Create a new role document in the "Role Authentication" collection
     db.collection("Role Authentication")
       .add({
@@ -139,12 +138,13 @@ function AddNewRolePopUp({ open, handleClose }) {
         cloneRole,
       })
       .then(() => {
-        console.log("Role created successfully");
         handleClose();
       })
       .catch((error) => {
         console.error("Error creating role:", error);
       });
+    setRoleName("");
+    setCloneRole("");
     handleClose();
   };
 
