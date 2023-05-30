@@ -165,6 +165,7 @@ export default function App() {
       color="dark"
       sx={{ cursor: "pointer" }}
       onClick={handleConfiguratorOpen}
+      
     >
       <Icon fontSize="small" color="inherit">
         settings
